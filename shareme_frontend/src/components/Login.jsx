@@ -1,38 +1,32 @@
 import React from "react";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { GoogleLogin } from "@react-oauth/google";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import shareVideo from "../assets/share.mp4";
 import logo from "../assets/logowhite.png";
 import jwt_decode from "jwt-decode";
-import { client } from '../client'
-
-
+import { client } from "../client";
 
 const Login = () => {
   const navigate = useNavigate();
 
   const responseGoogle = (response) => {
-    const token = jwt_decode(response.credential)
-    localStorage.setItem('user', JSON.stringify(token))
+    const token = jwt_decode(response.credential);
+    localStorage.setItem("user", JSON.stringify(token));
 
-    const {name, aud, picture } = token;
+    const { name, aud, picture } = token;
 
     const doc = {
       _id: aud,
-      _type:'user',
-      userName: name, 
-      image: picture
-    }
+      _type: "user",
+      userName: name,
+      image: picture,
+    };
 
-    client.createIfNotExists(doc)
-    .then(() => {
-      navigate('/', {replace: true})
-
-    })
-  }
-
-
+    client.createIfNotExists(doc).then(() => {
+      navigate("/", { replace: true });
+    });
+  };
 
   return (
     <div className="flex-justify-start items-center flex-col h-screen">
@@ -51,13 +45,16 @@ const Login = () => {
             <img src={logo} width="130px" alt="logo" />
           </div>
           <div className="shadow-2xl">
-            <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_API_TOKEN}>
+            <GoogleOAuthProvider
+              clientId={process.env.REACT_APP_GOOGLE_API_TOKEN}
+            >
               <GoogleLogin
                 onSuccess={responseGoogle}
                 onError={responseGoogle}
                 cookiePolicy="single_host_origin"
                 useOneTap
-              />;
+              />
+              ;
             </GoogleOAuthProvider>
           </div>
         </div>
