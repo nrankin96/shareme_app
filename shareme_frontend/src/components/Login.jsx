@@ -6,6 +6,15 @@ import shareVideo from "../assets/share.mp4";
 import logo from "../assets/logowhite.png";
 
 const Login = () => {
+  const responseGoogle = (response) => {
+    // localStorage.setItem('user', JSON.stringify(response))
+    console.log(response)
+
+    
+  }
+
+
+
   return (
     <div className="flex-justify-start items-center flex-col h-screen">
       <div className="relative w-full h-full">
@@ -25,12 +34,8 @@ const Login = () => {
           <div className="shadow-2xl">
             <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_API_TOKEN}>
               <GoogleLogin
-                onSuccess={(credentialResponse) => {
-                  console.log(credentialResponse);
-                }}
-                onError={() => {
-                  console.log("Login Failed");
-                }}
+                onSuccess={responseGoogle}
+                onError={responseGoogle}
                 cookiePolicy="single_host_origin"
                 useOneTap
               />;
